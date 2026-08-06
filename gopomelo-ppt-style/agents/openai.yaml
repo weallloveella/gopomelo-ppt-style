@@ -1,0 +1,5 @@
+interface:
+  display_name: "GoPomelo PPT Style"
+  short_description: "Create GoPomelo-styled PPTX and HTML decks"
+  brand_color: "#F83F8F"
+  default_prompt: "Use $gopomelo-ppt-style to create a polished GoPomelo presentation in PPTX, Google Slides, HTML, or matched formats."
