@@ -10,6 +10,8 @@ The system combines clean B2B layouts with GoPomelo's visual identity:
 - Consistent typography, card treatments, spacing, and logo placement
 - Editable PPTX output and browser-based HTML presentation output
 
+The current skill includes a wider layout library, long-deck visual-rhythm rules, timelines, loops, ecosystem maps, KPI ledgers, benchmark bars, matrices, screenshot theater, and the GP03 contrast-statement variant.
+
 ## Install
 
 ### Any supported AI coding tool
@@ -72,6 +74,7 @@ gopomelo-ppt-style/
   assets/
   references/
   scripts/
+
 ```
 
-The sample PPTX and montage are included under `gopomelo-ppt-style/assets/pptx/`.
+The skill includes its HTML template, editable PPTX helper, brand assets, references, and validator.
