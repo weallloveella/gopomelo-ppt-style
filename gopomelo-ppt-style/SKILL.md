@@ -1,129 +1,117 @@
 ---
 name: gopomelo-ppt-style
-description: Create or refine GoPomelo-branded presentation decks as editable PowerPoint (.pptx), native Google Slides-targeted imports, horizontal slide HTML, or matched outputs. Use when a user asks for a GoPomelo PPT, Google Slides deck, pitch deck, proposal, keynote, event deck, sales presentation, internal report, presentation template, web slides, HTML deck, or wants an existing presentation restyled to the GoPomelo visual language.
+description: Create or refine visually varied GoPomelo-branded presentation decks as horizontal HTML, editable PowerPoint (.pptx), or Google Slides-targeted imports. Use for GoPomelo presentations, pitch decks, internal reports, training decks, long-form keynote decks, web slides, presentation templates, or when an existing GoPomelo deck feels repetitive and needs stronger visual rhythm, diagrams, data views, timelines, evidence pages, or richer layout selection.
 ---
 
 # GoPomelo PPT Style
 
-Create premium GoPomelo presentation artifacts that translate the existing landing-page language into a 16:9 presentation system. Keep PPTX and HTML outputs visually aligned while respecting the capabilities of each format.
+Create premium GoPomelo presentations that translate the landing-page visual language into a flexible 16:9 system. Preserve the original brand rules while adding stronger long-deck composition, semantic layout selection, and deterministic variety checks.
 
 ## Core rules
 
-- Treat the GoPomelo landing-page design as the visual source of truth.
-- Use the landing-page font stack. Do not introduce Product Sans or a new display font unless the user explicitly asks.
-- Use three page states only: `warm`, `light`, and `dark`. Let `warm` create the branded opening and major turn; use `light` and `dark` for clarity, contrast, and breathing room.
-- Treat pink as the primary brand identifier, but express it through logo details, dots, rules, keywords, numbers, buttons, and localized gradient fields rather than repeating flat full-slide pink backgrounds.
-- Build warm gradients from GoPomelo pink flowing into orange and gold. Orange provides energy and transition; it does not replace pink as the brand anchor.
-- Use the gradient cover by default. Place the white GoPomelo logo directly on the gradient without a white pill, card, or container.
-- On a `warm` gradient, all text placed directly on the gradient must be white at 86–100% opacity. Do not use gray, `muted`, or dark text unless it sits inside a genuinely light surface with independent contrast.
-- On standard content slides, place the GoPomelo logo in the top-right safe-frame corner by default. If primary content, media, or a data panel occupies that reserve, omit the logo instead of shrinking or shifting the content. Cover, divider, and closing slides may use special placement.
-- Do not introduce a generic technology blue/cyan system. Permit blue only inside an approved partner logo, product screenshot, chart category, or source image that must remain faithful.
-- Keep visible copy audience-facing. Never expose planning notes, placeholders, prompt language, or production commentary.
-- Build independently. Do not copy templates, scripts, shaders, or layout code from `guizang-ppt-skill`.
+- Treat [references/brand-system.md](references/brand-system.md) as the visual source of truth.
+- Use the landing-page system font stack. Map it to Arial for cross-platform PPTX and Google Slides delivery.
+- Use only `warm`, `light`, and `dark` page states. Use warm gradients for the cover and rare major turns; let light and dark pages carry most content.
+- Keep pink as the primary brand identifier through logos, labels, rules, numbers, and localized gradients. Use orange and gold inside warm transitions, not as independent brand systems.
+- Place the standard logo in the top-right safe reserve. Use `omit` when primary content occupies that area; use `special` only for covers, dividers, and closings.
+- Keep direct text on warm gradients white at 86–100% opacity.
+- Prefer one clear composition over repeated card grids. Use images, diagrams, data structures, and spatial relationships as evidence rather than decoration.
+- Keep visible content audience-facing. Never expose prompts, planning notes, or production labels.
+- Never invent data, metrics, quotes, sources, or outcomes.
+- Build independently. Do not copy code or templates from other presentation skills.
 
-Always read [references/brand-system.md](references/brand-system.md) before authoring. Read [references/layouts.md](references/layouts.md) before planning slide layouts.
+Read [references/layouts.md](references/layouts.md) before planning. For decks of 20 or more slides, also read [references/long-decks.md](references/long-decks.md) completely.
 
 ## Workflow
 
 ### 1. Define the communication job
 
-Infer or confirm:
+Infer or confirm the audience, setting, desired outcome, central takeaway, duration, source material, assets, and output format.
 
-- Output: PPTX, HTML, or both.
-- Audience and presentation setting.
-- Desired outcome and central takeaway.
-- Duration or target page count.
-- Source material, images, screenshots, data, and required language.
-
-Ask no more than three questions at once. If missing information does not materially change the result, make a reasonable assumption and state it.
-
-Write one internal sentence before planning:
+Write one internal sentence:
 
 ```text
 By the end, [audience] should [outcome] because [central takeaway].
 ```
 
-### 2. Plan the narrative and slide register
+### 2. Build a slide register
 
-Build a cumulative narrative rather than a gallery of unrelated pages. Give every slide one narrative job and one primary claim.
-
-Create a slide register before authoring:
+Plan the cumulative narrative before authoring:
 
 ```text
-Page | Layout ID | State | Logo | Claim | Image slot | Output notes
+Page | Layout ID | Variant | State | Logo | Visual mode | Density | Claim | Asset | Reuse distance
 ```
 
-Use only registered `GP01`–`GP12` layouts unless the user explicitly requests an experimental layout. For decks of eight or more pages:
+Use registered layouts `GP01`–`GP20`. Select layouts by content shape, not by visual preference. Use `data-visual="text|diagram|data|image|mixed"` on every HTML slide.
 
-- Use all three states.
-- Do not use one state on three consecutive pages.
-- Use at least six different layout IDs.
-- Include one image-led layout unless the material genuinely has no useful visual evidence.
-- Use one or two `warm` pages by default: the cover plus one major act divider or emphasis page.
+Use the registered `GP03` `contrast` variant for a short old-belief → new-direction reversal. Do not substitute a dense GP11 comparison when the narrative needs a sparse, high-impact pause.
+
+For 8–19 slides:
+
+- Use at least six layout IDs and all three states.
+- Include at least two diagram-, data-, image-, or mixed-led pages when the content supports them.
+- Avoid the same layout on consecutive pages.
+
+For 20–29 slides:
+
+- Use at least eight layout IDs.
+- Make at least 25% of pages diagram-, data-, image-, or mixed-led.
+- Keep any one layout at or below 20% of the deck.
+
+For 30 or more slides:
+
+- Use at least ten layout IDs.
+- Make at least 30% of pages diagram-, data-, image-, or mixed-led.
+- Keep any one layout at or below 15% of the deck unless an intentional recurring motif is documented.
+- Keep the top four layout IDs below 65% combined.
+- Plan acts of four to seven pages. Use state changes to express narrative turns, not mechanical light/dark alternation.
 
 ### 3. Prepare assets
 
-Use the official logo and icon assets in `assets/brand/`. Copy required assets into the output folder; do not reference the skill directory from a delivered artifact. Use `gopomelo-icon-gradient.svg` or its inline SVG path for the closing motif rather than an external CSS mask or a generic closing-page blob.
+Use approved assets from `assets/brand/`. Copy required files into the delivered artifact and use relative paths. Preserve the closing pomelo-slice motif at 1:1 and crop it only through slide overflow.
 
-For image-heavy work, read [references/image-guidelines.md](references/image-guidelines.md). Prefer original high-resolution assets. Do not reuse the same non-background image more than once.
+Read [references/image-guidelines.md](references/image-guidelines.md) for image-led work. Use each non-background image once by default. Use constructed HTML visuals only when they clarify a real relationship and do not impersonate a screenshot.
 
-### 4. Generate the selected format
+### 4. Generate
 
 #### HTML
 
-Read [references/html-output.md](references/html-output.md), copy `assets/html/template.html`, insert registered slide sections at `<!-- SLIDES_HERE -->`, and keep all slide classes sourced from the template.
-
-Preserve keyboard, wheel, touch, overview, and low-power controls. Use relative image paths.
+Read [references/html-output.md](references/html-output.md). Copy `assets/html/template.html`, insert registered slide sections, and use the supplied expanded layout classes. Preserve keyboard, wheel, touch, overview, low-power, and capture controls.
 
 #### PPTX
 
-Read [references/pptx-output.md](references/pptx-output.md). Use the installed `Presentations` skill and `@oai/artifact-tool`; do not use `python-pptx` or PptxGenJS. Copy `assets/pptx/gopomelo-deck.mjs` into the presentation scratch workspace and use its design tokens and layout helpers.
-
-Keep text, cards, charts, and simple diagrams editable. Use supplied images for primary visual evidence.
-
-#### Both
-
-Use one slide register and the same layout IDs, titles, order, page states, and assets. Adapt effects that do not translate literally:
-
-- HTML may use blur and browser-native motion.
-- PPTX should simulate glass with pale solid fills, fine borders, and restrained shadows.
-- Never redesign the PPTX into a different visual system merely because effects differ.
+Read [references/pptx-output.md](references/pptx-output.md) and use the installed Presentations skill with `@oai/artifact-tool`. Keep text, cards, charts, and simple diagrams editable. Recreate the registered layout geometry with native editable shapes rather than flattening whole slides.
 
 #### Google Slides
 
-Create and validate the editable PPTX first, then use the installed Google Slides/Drive skill to import it as native Google Slides. Do not embed the HTML deck inside Slides. Use HTML for design approval and browser presentation only.
-
-After import, verify that text, shapes, images, and page order remain editable and visually intact. Once a native GoPomelo reference deck exists, copy that deck for future work instead of re-importing every time.
+Create and verify the editable PPTX first, then import it as native Google Slides. Do not embed the HTML presentation in Slides.
 
 ### 5. Validate and inspect
 
 Read [references/checklist.md](references/checklist.md) completely.
 
-For HTML, run:
+Run:
 
 ```bash
 node <SKILL_ROOT>/scripts/validate-html.mjs /absolute/path/to/index.html
 ```
 
-Open the HTML at 1280×720 and inspect every page after motion settles. Verify overview mode and keyboard/touch navigation.
-
-For PPTX, render every slide, inspect each full-size image, inspect a montage for rhythm, and run the presentation overflow test. Fix all unintended overlaps, clipped text, and wrapping before delivery.
+Fix every error and review every warning. Inspect every slide at 1280×720 after motion settles, inspect overview rhythm, and inspect at least one 3× capture-mode export.
 
 ### 6. Deliver
 
-Return the requested final artifact paths. Keep scratch builders, previews, layout JSON, and QA logs outside the deliverables unless the user asks for them.
+Return only requested artifacts. Preserve original source decks when producing a test or redesign.
 
 ## Resource map
 
-- [references/brand-system.md](references/brand-system.md): colors, typography, spacing, cards, and state rules.
-- [references/layouts.md](references/layouts.md): registered `GP01`–`GP12` layout catalog.
-- [references/html-output.md](references/html-output.md): HTML assembly and interaction requirements.
-- [references/pptx-output.md](references/pptx-output.md): artifact-tool workflow and PPTX parity rules.
-- [references/image-guidelines.md](references/image-guidelines.md): asset selection, cropping, and screenshot treatment.
-- [references/checklist.md](references/checklist.md): mandatory visual and technical QA.
-- `assets/html/template.html`: original GoPomelo horizontal deck engine.
-- `assets/pptx/gopomelo-deck.mjs`: editable PPTX theme and layout helpers.
-- `assets/pptx/gopomelo-ppt-style-sampler.pptx`: tested 10-slide editable style reference.
-- `assets/pptx/gopomelo-ppt-style-sampler-montage.png`: quick visual reference for the complete system.
-- `assets/brand/`: approved GoPomelo logo assets.
-- `scripts/validate-html.mjs`: deterministic HTML deck validation.
+- [references/brand-system.md](references/brand-system.md): color, typography, state, logo, and motif rules.
+- [references/layouts.md](references/layouts.md): registered `GP01`–`GP20` content shapes.
+- [references/long-decks.md](references/long-decks.md): act planning, diversity targets, and long-deck rhythm.
+- [references/html-output.md](references/html-output.md): HTML assembly and metadata requirements.
+- [references/pptx-output.md](references/pptx-output.md): PPTX and Google Slides parity.
+- [references/image-guidelines.md](references/image-guidelines.md): image selection and framing.
+- [references/checklist.md](references/checklist.md): mandatory QA.
+- `assets/html/template.html`: HTML engine and reusable layout classes.
+- `assets/pptx/gopomelo-deck.mjs`: editable PPTX theme baseline.
+- `assets/brand/`: approved GoPomelo assets.
+- `scripts/validate-html.mjs`: semantic and diversity validator.
