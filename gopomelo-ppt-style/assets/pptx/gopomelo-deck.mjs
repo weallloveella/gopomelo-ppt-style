@@ -6,19 +6,20 @@ export const SIZE = { width: 1280, height: 720 };
 export const FRAME = { left: 72, top: 58, width: 1136, height: 604 };
 
 export const COLORS = {
-  pink: "#F83F8F",
+  pink: "#ED2E7B",
+  pinkBright: "#F83F8F",
   pinkDeep: "#C91866",
-  coral: "#F3604F",
-  orange: "#FB9305",
-  gold: "#FFBE06",
-  inkDeep: "#17191F",
-  ink: "#20252D",
-  inkSoft: "#4E4E4E",
+  coral: "#F45138",
+  orange: "#FF6A00",
+  gold: "#FFB900",
+  inkDeep: "#141414",
+  ink: "#141414",
+  inkSoft: "#2A2A2A",
   muted: "#6E6E73",
-  paper: "#FFF9F6",
-  paper2: "#FFF1E8",
+  paper: "#FFFFFF",
+  paper2: "#F4F4F4",
   white: "#FFFFFF",
-  line: "#20252D/10",
+  line: "#141414/10",
 };
 
 export const TYPE = {
@@ -27,23 +28,42 @@ export const TYPE = {
 };
 
 export const FILLS = {
-  warm: "linear(315deg, #F3604F 0%, #FB9305 62%, #FFBE06 100%)",
-  light: "linear(180deg, #FFFFFF 0%, #FFFDFC 100%)",
-  dark: "linear(145deg, #17191F 0%, #20252D 100%)",
+  warm: "linear(118deg, #FF6A00 0%, #F45138 48%, #ED2E7B 100%)",
+  light: "linear(180deg, #FFFFFF 0%, #FFFFFF 100%)",
+  dark: "linear(180deg, #141414 0%, #141414 100%)",
 };
 
 export function createPresentation() {
   return Presentation.create({ slideSize: SIZE });
 }
 
-export async function loadImageAsset(imagePath, alt = path.basename(imagePath)) {
-  const bytes = await fs.readFile(imagePath);
+export async function loadImageAsset(imagePath, alt = path.basename(imagePath), options = {}) {
   const ext = path.extname(imagePath).toLowerCase();
+  let bytes;
+  if (ext === ".svg") {
+    let source = await fs.readFile(imagePath, "utf8");
+    if (options.svgFill) {
+      source = source
+        .replace(/#000000/gi, options.svgFill)
+        .replace(/class="cls-1"/g, `fill="${options.svgFill}"`);
+    }
+    if (Number.isFinite(options.svgOpacity)) {
+      const opacity = Math.max(0, Math.min(1, options.svgOpacity));
+      source = source
+        .replace("<svg ", `<svg opacity="${opacity}" `)
+        .replace(/<path /g, `<path fill-opacity="${opacity}" `);
+    }
+    bytes = Buffer.from(source);
+  } else {
+    bytes = await fs.readFile(imagePath);
+  }
   const contentType = ext === ".jpg" || ext === ".jpeg"
     ? "image/jpeg"
     : ext === ".webp"
       ? "image/webp"
-      : "image/png";
+      : ext === ".svg"
+        ? "image/svg+xml"
+        : "image/png";
   return {
     blob: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
     contentType,
@@ -138,6 +158,11 @@ function baseSlide(presentation, layoutId, state) {
       "radial(#F83F8F/16 0%, #F83F8F/0 72%)",
       { geometry: "ellipse" });
   }
+  if (state === "warm") {
+    addRect(slide, `${layoutId}-gold-wash`, { left: 900, top: 0, width: 380, height: 280 },
+      "radial(#FFB900/92 0%, #FFB900/0 72%)",
+      { geometry: "ellipse" });
+  }
   return slide;
 }
 
@@ -156,29 +181,45 @@ function addEyebrow(slide, text, x, y, state) {
 
 function addLogo(slide, logo, state, x = 72, y = 54) {
   if (!logo) return;
-  if (state === "warm") {
-    addRect(slide, "gopomelo-logo-pill", { left: x, top: y, width: 164, height: 48 }, COLORS.white, {
-      radius: 24,
-      shadow: "0px 10px 26px #5B2E36/15",
-    });
-    slide.images.add({
-      name: "gopomelo-logo",
-      blob: logo.blob,
-      contentType: logo.contentType,
-      alt: "GoPomelo logo",
-      fit: "contain",
-      position: { left: x + 16, top: y + 13, width: 132, height: 22 },
-    });
-  } else {
-    slide.images.add({
-      name: "gopomelo-logo",
-      blob: logo.blob,
-      contentType: logo.contentType,
-      alt: "GoPomelo logo",
-      fit: "contain",
-      position: { left: x, top: y + 8, width: 142, height: 27 },
-    });
-  }
+  const asset = state === "warm"
+    ? (logo.white ?? logo.reverse ?? logo)
+    : (logo.default ?? logo.standard ?? logo);
+  slide.images.add({
+    name: "gopomelo-logo",
+    blob: asset.blob,
+    contentType: asset.contentType,
+    alt: asset.alt ?? "GoPomelo logo",
+    fit: "contain",
+    position: { left: x, top: y + 8, width: 142, height: 27 },
+  });
+}
+
+function addClosingMotif(slide, motif, position = {}) {
+  if (!motif) return;
+  const size = position.size ?? position.width ?? position.height ?? 560;
+  const left = position.left ?? 900;
+  const top = position.top ?? 365;
+  const visibleWidth = Math.max(1, Math.min(size, SIZE.width - left));
+  const visibleHeight = Math.max(1, Math.min(size, SIZE.height - top));
+  slide.images.add({
+    name: "gopomelo-closing-motif",
+    blob: motif.blob,
+    contentType: motif.contentType,
+    alt: motif.alt ?? "GoPomelo motif",
+    fit: "contain",
+    position: {
+      left,
+      top,
+      width: visibleWidth,
+      height: visibleHeight,
+    },
+    crop: {
+      left: 0,
+      top: 0,
+      right: 1 - visibleWidth / size,
+      bottom: 1 - visibleHeight / size,
+    },
+  });
 }
 
 function addChrome(slide, page, state, label = "GoPomelo") {
@@ -211,7 +252,7 @@ function addSlideTitle(slide, title, state, eyebrow) {
 }
 
 export function addGP01(presentation, spec) {
-  const state = spec.state ?? "dark";
+  const state = spec.state ?? "warm";
   const colors = stateColors(state);
   const slide = baseSlide(presentation, "GP01", state);
   addLogo(slide, spec.logo, state);
@@ -230,9 +271,10 @@ export function addGP01(presentation, spec) {
       lineSpacing: 1.28,
     });
   }
+  let tagLeft = 72;
   (spec.tags ?? []).slice(0, 4).forEach((tag, i) => {
     const width = 116 + tag.length * 4;
-    const left = 72 + i * 154;
+    const left = tagLeft;
     addRect(slide, `cover-tag-${i + 1}`, { left, top: 575, width, height: 38 }, state === "light" ? "#FFFFFF" : "#FFFFFF/06", {
       radius: 19,
       line: { style: "solid", fill: colors.line, width: 1 },
@@ -244,6 +286,7 @@ export function addGP01(presentation, spec) {
       alignment: "center",
       lineSpacing: 1,
     });
+    tagLeft += width + 12;
   });
   addChrome(slide, spec.page ?? 1, state, spec.chrome ?? "GoPomelo");
   return slide;
@@ -301,6 +344,49 @@ export function addGP03(presentation, spec) {
   const slide = baseSlide(presentation, "GP03", state);
   const colors = stateColors(state);
   addLogo(slide, spec.logo, state, 1044, 52);
+  if (spec.variant === "contrast") {
+    const before = spec.before ?? "Old direction";
+    const after = spec.after ?? "New direction";
+    const eyebrow = spec.eyebrow ?? "Point of view";
+    const strikeWidth = Math.min(720, Math.max(260, before.length * 37));
+    const eyebrowWidth = Math.min(360, Math.max(140, eyebrow.length * 9));
+    const eyebrowLeft = (SIZE.width - eyebrowWidth) / 2;
+    addText(slide, "contrast-eyebrow", eyebrow.toUpperCase(), { left: eyebrowLeft, top: 126, width: eyebrowWidth, height: 24 }, {
+      fontSize: 14,
+      bold: true,
+      color: colors.primary,
+      alignment: "center",
+      lineSpacing: 1,
+    });
+    addRect(slide, "contrast-eyebrow-dot", { left: eyebrowLeft - 18, top: 132, width: 9, height: 9 }, COLORS.pink, { geometry: "ellipse" });
+    addText(slide, "contrast-before", before, { left: 140, top: 202, width: 1000, height: 104 }, {
+      typeface: TYPE.display,
+      fontSize: spec.statementSize ?? 76,
+      bold: true,
+      color: state === "dark" ? "#FFFFFF/46" : "#8A8A8A",
+      alignment: "center",
+      verticalAlignment: "middle",
+      lineSpacing: .96,
+    });
+    addRect(slide, "contrast-strike", { left: (SIZE.width - strikeWidth) / 2, top: 253, width: strikeWidth, height: 5 }, state === "dark" ? "#FFFFFF/46" : "#8A8A8A");
+    addText(slide, "contrast-after", after, { left: 110, top: 318, width: 1060, height: 116 }, {
+      typeface: TYPE.display,
+      fontSize: spec.statementSize ?? 76,
+      bold: true,
+      color: state === "dark" ? COLORS.pinkBright : COLORS.pinkDeep,
+      alignment: "center",
+      verticalAlignment: "middle",
+      lineSpacing: .96,
+    });
+    if (spec.support) addText(slide, "contrast-support", spec.support, { left: 260, top: 482, width: 760, height: 76 }, {
+      fontSize: 20,
+      color: colors.secondary,
+      alignment: "center",
+      lineSpacing: 1.34,
+    });
+    addChrome(slide, spec.page, state, spec.chrome);
+    return slide;
+  }
   addEyebrow(slide, spec.eyebrow ?? "Point of view", 72, 124, state);
   addText(slide, "statement", spec.statement, { left: 72, top: 198, width: 1080, height: 280 }, {
     typeface: TYPE.display,
@@ -362,7 +448,7 @@ export function addGP05(presentation, spec) {
   const state = spec.state ?? "light";
   const slide = baseSlide(presentation, "GP05", state);
   const colors = stateColors(state);
-  addLogo(slide, spec.logo, state, 72, 52);
+  addLogo(slide, spec.logo, state, 1060, 52);
   addEyebrow(slide, spec.eyebrow ?? "Visual evidence", 72, 138, state);
   addText(slide, "split-title", spec.title, { left: 72, top: 186, width: 430, height: 158 }, {
     typeface: TYPE.display,
@@ -551,16 +637,17 @@ export function addGP10(presentation, spec) {
   const state = spec.state ?? "light";
   const colors = stateColors(state);
   const slide = baseSlide(presentation, "GP10", state);
-  addLogo(slide, spec.logo, state);
+  addClosingMotif(slide, spec.motif, spec.motifPosition);
+  addLogo(slide, spec.logo, state, 1060, 52);
   addEyebrow(slide, spec.eyebrow ?? "Next step", 72, 164, state);
-  addText(slide, "closing-title", spec.title, { left: 72, top: 220, width: 1050, height: 190 }, {
+  addText(slide, "closing-title", spec.title, { left: 72, top: 220, width: 760, height: 190 }, {
     typeface: TYPE.display,
     fontSize: spec.titleSize ?? 72,
     bold: true,
     color: colors.primary,
     lineSpacing: .94,
   });
-  if (spec.support) addText(slide, "closing-support", spec.support, { left: 72, top: 452, width: 760, height: 90 }, {
+  if (spec.support) addText(slide, "closing-support", spec.support, { left: 72, top: 452, width: 720, height: 90 }, {
     fontSize: 21,
     color: colors.secondary,
     lineSpacing: 1.34,
