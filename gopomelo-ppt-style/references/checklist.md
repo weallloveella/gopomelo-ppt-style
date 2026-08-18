@@ -2,64 +2,55 @@
 
 ## P0 · Must pass
 
-- Every slide has one `GP01`–`GP12` layout ID and one `warm`, `light`, or `dark` state.
-- The title, subtitle, and all visible copy are audience-facing.
-- No TODO, placeholder, prompt, internal note, or production wording remains.
-- HTML preserves the landing-page SF Pro/system font stack; PPTX uses the approved Arial mapping from that stack.
-- BytePlus blue/cyan tokens are absent unless required by approved partner/source material.
-- Dark pages use warm charcoal, not navy.
-- The default cover uses the approved pink–orange–gold layered gradient.
-- The white cover logo sits directly on the gradient without a white pill, card, or backdrop.
-- Every text element placed directly on a warm gradient is white at 86–100% opacity; no gray, muted, or dark support copy remains.
-- Pink remains the first brand-recognition signal while appearing mainly through accents and localized gradient elements.
-- Deck title is at least 50pt-equivalent, slide titles at least 35pt-equivalent, and body text at least 16pt-equivalent.
-- No one-line title wraps unexpectedly.
-- No text, image, caption, or footer leaves the slide canvas or enters the navigation safe zone.
-- All unintended overlap warnings are fixed.
-- Every local asset path resolves and delivered files use relative paths.
-- Standard content pages default to the top-right logo; any omission is justified by content occupying the logo reserve.
+- Every slide has `data-layout="GP01"`–`GP20`, `data-state`, `data-logo`, and `data-visual`.
+- Every slide contains one audience-facing claim and no placeholder, prompt, or production copy.
+- Brand colors, typography, warm-gradient contrast, logo reserve, and closing motif follow `brand-system.md`.
+- No unintended overlap, clipping, tiny text, broken image, absolute delivery path, or navigation-safe-zone collision remains.
+- BytePlus blue/cyan and blue-black surfaces are absent unless preserved inside approved source media.
+- All externally sourced claims and media remain traceable.
 
-## P1 · Narrative and rhythm
+## P1 · Semantic layout fit
 
-- The communication job is clear.
-- Every page advances the story and has one primary claim.
-- The opening creates a reason to continue.
-- The closing resolves the opening with an action, decision, implication, or useful question.
-- An eight-page-or-longer deck uses all three states.
-- No state repeats on three consecutive pages.
-- An eight-page-or-longer deck uses at least six layout IDs.
+- GP03 is reserved for genuinely decisive statements and is not used as default filler.
+- A GP03 contrast statement contains one short old phrase, one short replacement phrase, and no detailed comparison content; use GP11 for that detail.
+- GP04 has exactly three equal concepts.
+- GP05, GP09, and GP20 contain a real image, screenshot, or clearly constructed evidence visual.
+- GP08, GP17, and GP18 use verified numerical data.
+- GP12 contains three to six images with one crop logic.
+- GP13 expresses real time or ordered progression.
+- GP14 closes a real loop.
+- GP15 expresses nested or stacked levels.
+- GP16 expresses relationships around a core.
+- GP19 labels both dimensions or row/column structure.
+
+## P2 · Long-deck rhythm
+
+- 8–19 slides use at least six layouts and all three states.
+- 20–29 slides use at least eight layouts, with at least 25% visual-evidence pages.
+- 30+ slides use at least ten layouts, with at least 30% visual-evidence pages.
+- In a 30+ slide deck, no layout exceeds 15% and the top four stay below 65% unless an intentional exception is documented.
+- The same layout does not appear consecutively; distinctive silhouettes have at least two intervening slides when practical.
+- State changes follow narrative acts rather than mechanical alternation.
 - Dense and sparse pages alternate intentionally.
-- At least one image-led page appears when useful visual evidence exists.
 
-## P2 · Visual system
+## P3 · Visual system
 
-- Full warm gradients are concentrated on the cover and one major divider or emphasis page.
-- In an 8–12 page deck, the full warm gradient appears no more than twice by default.
-- Light and dark content pages may use one localized pink-led gradient card, halo, or cropped field.
-- Orange supports the pink-led brand system rather than becoming an independent primary color.
-- Light pages use no more than one dominant gradient wash.
-- Cards use consistent 28–34px primary radii and 16–20px nested radii.
-- Shadows are restrained and warm-neutral.
-- Not every page is a card grid.
-- Pills contain short labels only.
-- Images follow standard ratios and consistent crop logic.
-- The GoPomelo logo has sufficient contrast and is not stretched.
-- GP10 uses the approved favicon/pomelo-slice motif when a large brand shape is needed, not an arbitrary rounded rectangle.
+- Full warm gradients are concentrated on the cover and rare major transitions.
+- Pink remains the first recognition signal; orange supports transition and energy.
+- Cards group meaning rather than fill empty space.
+- Diagram labels are short and readable; relationship lines do not cross labels.
+- Data marks preserve their true scale, direct labels remain legible, and sources are present.
+- Screenshots use `contain` when fidelity matters and are not presented as fabricated UI.
 
-## P3 · Interaction and output
+## P4 · HTML behavior
 
-### HTML
+- Keyboard, wheel, swipe, overview, low-power, and reduced-motion modes work.
+- Capture mode opens the requested slide and hides navigation controls.
+- No slide has horizontal or vertical overflow at 1280×720.
+- Overview thumbnails reveal their content.
 
-- Arrow, PageUp/PageDown, Home/End, Space, wheel, and swipe navigation work.
-- Escape overview works and thumbnails reveal content.
-- `B` low-power mode disables nonessential motion.
-- `prefers-reduced-motion` leaves all content visible.
-- The deck has no horizontal overflow inside an individual page.
+## P5 · PPTX and Google Slides
 
-### PPTX
-
-- Text, cards, charts, and simple workflow elements remain editable.
-- Every slide is rendered and inspected individually.
-- Montage rhythm matches the HTML version when both are requested.
-- Overflow test passes.
-- The PPTX opens without unresolved fonts, missing images, or repair warnings.
+- Text, charts, simple diagrams, and layout geometry remain editable.
+- Every slide is rendered and inspected full size; the montage shows deliberate rhythm.
+- Overflow tests pass and no font, asset, repair, or import warning remains.

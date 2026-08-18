@@ -1,52 +1,78 @@
 # HTML output workflow
 
-## Assemble the deck
+## Assemble
 
-1. Copy `assets/html/template.html` to the target `index.html`.
-2. Copy the required logo and image assets into a sibling `assets/` folder.
-3. Replace the document title placeholder.
-4. Replace `<!-- SLIDES_HERE -->` with registered slide sections.
-5. Keep every slide in this form:
+1. Copy `assets/html/template.html` to the output `index.html`.
+2. Copy required brand and content assets into a sibling `assets/` folder.
+3. Replace the title and `<!-- SLIDES_HERE -->` marker.
+4. Use one registered layout, state, logo treatment, and visual mode on every slide:
 
 ```html
-<section class="slide" data-layout="GP04" data-state="light" data-logo="top-right">
-  <!-- audience-facing slide content -->
+<section class="slide"
+  data-layout="GP14"
+  data-state="dark"
+  data-logo="top-right"
+  data-visual="diagram">
+  <!-- audience-facing content -->
 </section>
 ```
 
-Use only classes already defined in the template. Add a reusable class to the template stylesheet when a required behavior is missing; do not accumulate one-off inline styles across slides.
+Use only reusable classes from the template. Add a class to the template stylesheet when a required behavior is missing; do not accumulate one-off inline layout systems.
 
-For warm slides, use the direct logo treatment from the template. The pink logo asset may be converted to white with the template's CSS filter; never add a white logo pill or card. On light and dark content pages, use at most one localized pink-led gradient field per page.
+For a GP03 contrast statement, use the registered variant structure:
 
-Use `data-logo="special"` for covers, dividers, and closing pages; `data-logo="top-right"` for standard content pages; and `data-logo="omit"` when primary content occupies the top-right reserve. For `top-right`, use the template's `.logo-top-right` class. Never move or shrink meaningful content just to make room for the logo.
+```html
+<section class="slide"
+  data-layout="GP03"
+  data-variant="contrast"
+  data-state="dark"
+  data-logo="top-right"
+  data-visual="text">
+  <div class="safe centered-claim contrast-statement">
+    <div>
+      <p class="eyebrow">The breakthrough</p>
+      <h2 class="statement">
+        <span class="strike-soft">Ask better.</span><br>
+        <span class="contrast-new">Design clearer.</span>
+      </h2>
+      <p class="lead">Define the system, not only the answer.</p>
+    </div>
+  </div>
+</section>
+```
 
-On `warm` pages, the template redefines `--muted` to high-contrast white. Keep every direct title, paragraph, caption, label, and number at 86–100% white. If a light card on a warm page genuinely needs dark text, add `.on-light` to that light surface; do not reintroduce gray text on the open gradient.
+## Preserve brand behavior
 
-When GP10 uses the approved closing motif, prefer the inline SVG path from `assets/brand/gopomelo-icon-gradient.svg`. Do not use an external PNG as a CSS mask on local `file://` decks because that treatment may fail silently. A normal `<img>` using the gradient SVG is the fallback when inline SVG is not practical.
+- Use `special` for cover, divider, and closing composition; `top-right` for standard pages; `omit` only when primary content occupies the reserve.
+- Keep the top-right 182×72px reserve clear when the logo is present.
+- Keep every direct text element on a warm gradient white at 86–100% opacity.
+- Use at most one localized pink-led gradient field on a light or dark content page.
+- Preserve the closing mark as a square, undistorted SVG emerging from the bottom-right.
 
 ## Preserve the engine
 
-Keep:
+Keep arrow, PageUp/PageDown, Home/End, Space, wheel, swipe, Escape overview, `B` low-power mode, navigation dots, page numbers, and `prefers-reduced-motion` support.
 
-- Left/right arrows, PageUp/PageDown, Home/End, and Space navigation.
-- Wheel navigation with threshold protection.
-- Touch swipe navigation.
-- Escape overview mode.
-- `B` low-power/static mode.
-- Page counter and navigation dots.
-- `prefers-reduced-motion` support.
+## Apply semantic classes
 
-The engine uses browser-native animation and contains no code copied from another presentation skill.
+Use the registered expanded class families:
 
-## Content and sizing
+- GP03 contrast: `.centered-claim`, `.contrast-statement`, `.strike-soft`, `.contrast-new`; add `data-variant="contrast"`.
+- GP13: `.timeline-layout`, `.timeline-track`, `.timeline-stop`, `.timeline-node`, `.timeline-copy`. Wrap every milestone heading and body in `.timeline-copy`.
+- GP14: `.loop-layout`, `.loop-copy`, `.loop-ring`, `.loop-node`.
+- GP15: `.layer-layout`, `.layer-stack`, `.layer-band`.
+- GP16: `.ecosystem-layout`, `.ecosystem-map`, `.ecosystem-core`, `.ecosystem-node`, `.ecosystem-line`.
+- GP17: `.ledger-layout`, `.ledger-list`, `.ledger-row`.
+- GP18: `.benchmark-layout`, `.bar-list`, `.bar-row`, `.bar-track`, `.bar-fill`.
+- GP19: `.matrix-layout`, `.matrix-grid`, `.matrix-cell`, `.row-header`. Set `--data-cols` and `--data-rows` for content cells, excluding axis headers.
+- GP20: `.screenshot-layout`, `.screenshot-stage`, `.screenshot-frame`, `.screenshot-callout`.
 
-- Validate at 1280×720 first.
-- Keep title and key content inside the safe frame.
-- Use relative image paths.
-- Ensure important meaning remains visible without hover.
-- Keep slide content readable when motion is disabled.
-- Do not use autoplay audio or essential autoplay video.
+Do not use a new layout ID while retaining the visual skeleton of GP03, GP04, or GP07.
+
+## Capture mode
+
+Use `index.html?capture=1&slide=N`. Capture a 1280×720 CSS viewport at 3× device scale for 3840×2160 output. Hide browser-presentation controls but keep on-slide page chrome.
 
 ## Final checks
 
-Run `scripts/validate-html.mjs`, then inspect each page at full size. Test keyboard, wheel, swipe, Escape, and `B` controls. Open overview mode and verify all thumbnails reveal their content.
+Run `scripts/validate-html.mjs`. Inspect every page at full size, overview rhythm, one dark page, one light page, one expanded layout, and the closing page in capture mode.

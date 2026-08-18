@@ -9,8 +9,9 @@
 5. Typography
 6. Grid and spacing
 7. Cards and surfaces
-8. Brand motifs
-9. Prohibited patterns
+8. Management data language
+9. Brand motifs
+10. Prohibited patterns
 
 ## 1. Design character
 
@@ -107,7 +108,10 @@ Use as a visual reset for evidence, workflow, case study, and high-contrast data
 - Default cover: `warm`, using the layered pink–orange–gold gradient, white typography, and the white logo directly on the field.
 - Alternate cover: `light` or `dark`, with one localized pink-led gradient element.
 - Do not place the cover logo inside a white frame.
-- Default closing: `light` or `dark`; use one clear action and a restrained brand accent.
+- Default closing: `light` or `dark`; use one clear action and the approved gradient pomelo-slice motif as the dominant brand accent.
+- Keep the closing motif square at source: a 1:1 HTML wrapper with `object-fit: contain`, or a proportional crop of a conceptual square in PPTX.
+- Scale the motif to about 44% of slide width, anchor it beyond the right and bottom edges, and reveal roughly 65–75% of its diameter. The cropped mark should feel as though it is emerging from the bottom-right corner.
+- Do not rotate, squash, or center the closing motif. Keep the left two-thirds of the page available for the resolved message and CTA.
 
 ## 4. Logo placement
 
@@ -166,8 +170,18 @@ Use line-height `0.92–1.02` for display titles and `1.35–1.5` for body copy.
 - PPTX glass simulation: opaque `#FFFDFC` or `#FFF6F1`, 1px border, minimal shadow.
 - Do not combine a heavy border, strong shadow, and strong gradient on one card.
 - Use pills for short metadata only; never turn paragraphs into pill collections.
+- Left-align values and labels in dense metric cards. If a card contains five or more measures, use a balanced two- or three-row grid.
+- Keep peer cards aligned internally; a centered middle card inside an otherwise left-aligned comparison row is an error unless it is intentionally dominant.
 
-## 8. Brand motifs
+## 8. Management data language
+
+- Use plain business terms before technical terms. Define unfamiliar measures in a subtitle, source line, or speaker note at first use.
+- Label opportunity amount as opportunity or pipeline value, not revenue, forecast, or business won.
+- Call `opportunity value ÷ recorded spend` a value-to-cost multiple or pipeline-efficiency indicator, not ROI.
+- When a rate can exceed 100%, state the denominator and explain why before management has to ask.
+- Treat visual clarity as data integrity: separate overlapping bubbles or labels without changing the underlying scale or category values.
+
+## 9. Brand motifs
 
 Use these motifs sparingly:
 
@@ -177,9 +191,17 @@ Use these motifs sparingly:
 - Small glowing dot for eyebrow labels.
 - White glass labels on imagery.
 
+For the GP10 closing motif:
+
+- Use only `gopomelo-icon-gradient.svg` or the same approved path embedded inline.
+- Preserve the SVG's square viewBox and circular outer silhouette with a 1:1 rendered box.
+- On a 1280×720 canvas, start near 560px square, position around `right:-180px; bottom:-205px`, and adjust only enough to protect the message. Use the same proportional placement at other sizes.
+- Let the slide itself clip the overflow. Do not crop the source SVG into a new distorted asset.
+- Use subdued opacity and a restrained warm shadow so the mark supports rather than competes with the closing copy.
+
 Do not invent unrelated waves, cloud icons, circuit traces, or arbitrary blobs.
 
-## 9. Prohibited patterns
+## 10. Prohibited patterns
 
 - Unexplained blue/cyan accent systems.
 - Blue-black backgrounds or blue-tinted shadows.
@@ -193,3 +215,5 @@ Do not invent unrelated waves, cloud icons, circuit traces, or arbitrary blobs.
 - Tiny body copy used to force content into a layout.
 - Repeated 3–4 card grids on every page.
 - Generic “Thank you” ending without a resolved action or implication.
+- Stretched, oval, centered, or fully exposed closing motifs.
+- Chart bubbles, labels, legends, or annotations that overlap enough to hide a name or key value.
